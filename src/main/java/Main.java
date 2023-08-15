@@ -25,6 +25,7 @@ public class Main {
         Double price = null;
         String type;
         Date date ;
+        boolean exception=false;
         ArrayList<Product> productArrayList=new ArrayList<>();
         String[] products= input.split("##");
         for (String i:products) {
@@ -37,10 +38,14 @@ public class Main {
                     catch (NumberFormatException e){
                         price=0.0;
                         exceptycount++;
+                        exception=true;
                     }
                     type = (productData[5]);
                     date = new SimpleDateFormat("MM/dd/yyyy").parse(productData[7]);
-                productArrayList.add(new Product(name, price, type, date));
+                    if(exception==false) {
+                        productArrayList.add(new Product(name, price, type, date));
+                    }
+                    exception=false;
             }
         }
 
@@ -85,16 +90,19 @@ public class Main {
     }
     public String finalParse(){
         // Create a HashMap to store groups of products based on price
-        HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
+        StringBuilder finalString=new StringBuilder();
 
-        groupedProducts("Milk");
-        groupedProducts("Bread");
-        groupedProducts("Cookies");
-        groupedProducts("Apples");
-        return null;
+        HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
+        finalString.append(groupedProducts("Milk"));
+        finalString.append(groupedProducts("Bread"));
+        finalString.append(groupedProducts("Cookies"));
+        finalString.append(groupedProducts("Apples"));
+        finalString.append("\nErrors         \t \t seen: "+exceptycount+" times");
+        return finalString.toString();
 
     }
-    public void groupedProducts(String input){
+    public String groupedProducts(String input){
+        String groupedproduct = null;
         int count=0;
         int thing=0;
         HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
@@ -105,6 +113,7 @@ public class Main {
             }
             groupedProducts.get(product.getPrice()).add(product);
         }
+        groupedproduct+=outputBuilder(input,count);
         System.out.println(outputBuilder(input,count));
         for (Double price : groupedProducts.keySet()) {
             int pricecount=0;
@@ -113,14 +122,18 @@ public class Main {
                 pricecount++;
             }
             if(thing==0) {
+                groupedproduct+=outputBuilderTwo(price, pricecount);
                 System.out.println(outputBuilderTwo(price, pricecount));
             }
             if(thing > 0){
+                groupedproduct+=outputBuilderThree(price, pricecount);
                 System.out.println(outputBuilderThree(price, pricecount));
             }
             thing++;
         }
+        groupedproduct+="\n";
         System.out.println("\n");
+        return groupedproduct;
 
     }
 
