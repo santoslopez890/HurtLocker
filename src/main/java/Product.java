@@ -7,6 +7,10 @@ public class Product {
 
     private Date expiration;
 
+    public Product() {
+
+    }
+
     public String getName() {
         return name;
     }
