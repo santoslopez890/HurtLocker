@@ -86,16 +86,11 @@ public class Main {
     public String finalParse(){
         // Create a HashMap to store groups of products based on price
         HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
-//        StringBuilder output=new StringBuilder();
-//        boolean alreadySeen=false;
-//        int seen=0;
-//        int priceSeen;
-//        String name;
-        groupedProducts("Apples");
-        groupedProducts("Bread");
-        groupedProducts("Milk");
-        groupedProducts("Cookies");
 
+        groupedProducts("Milk");
+        groupedProducts("Bread");
+        groupedProducts("Cookies");
+        groupedProducts("Apples");
         return null;
 
     }
@@ -113,26 +108,31 @@ public class Main {
         System.out.println(outputBuilder(input,count));
         for (Double price : groupedProducts.keySet()) {
             int pricecount=0;
-            System.out.println("Products with price $" + price + ":");
 
             for (Product product : groupedProducts.get(price)) {
-                System.out.println("- " + product.getName());
                 pricecount++;
             }
-            System.out.println(pricecount);
+            if(thing==0) {
+                System.out.println(outputBuilderTwo(price, pricecount));
+            }
+            if(thing > 0){
+                System.out.println(outputBuilderThree(price, pricecount));
+            }
+            thing++;
         }
+        System.out.println("\n");
 
     }
 
 
     public String outputBuilder(String name,int seen){
         return "name:    " + name + " \t\t seen: " + seen + " times\n" +
-                "============= \t \t =============\n";
+                "============= \t \t =============";
     }
 
     public String outputBuilderTwo(double price,int seenPrice){
         return "Price: \t " + price + "\t\t seen: " + seenPrice + " times"+
-        "\n-------------\t\t -------------\n";
+        "\n-------------\t\t -------------";
     }
     public String outputBuilderThree(double price,int seenPrice){
         return "Price: \t " + price + "\t\t seen: " + seenPrice + " times";
