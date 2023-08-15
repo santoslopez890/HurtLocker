@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 public class Main {
     private static int exceptycount;
-    private static LinkedHashMap<String, ArrayList<Product>> data = new LinkedHashMap<>();
+    //private static LinkedHashMap<String, ArrayList<Product>> data = new LinkedHashMap<>();
 
     public String readRawDataToString() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -52,7 +52,7 @@ public class Main {
         return productArrayList;
     }
 
-    public void nameSorter(ArrayList<Product> productArrayList) {
+    public LinkedHashMap<String, ArrayList<Product>> nameSorter(ArrayList<Product> productArrayList,LinkedHashMap<String, ArrayList<Product>> hashMap) {
         ArrayList<Product> bread = new ArrayList<>();
         ArrayList<Product> cookies = new ArrayList<>();
         ArrayList<Product> milk = new ArrayList<>();
@@ -77,20 +77,21 @@ public class Main {
                 exceptycount++;
             }
         }
-        data.put("Apples", apples);
-        data.put("Bread", bread);
-        data.put("Milk", milk);
-        data.put("Cookies", cookies);
-    }
+        hashMap.put("Apples", apples);
+        hashMap.put("Bread", bread);
+        hashMap.put("Milk", milk);
+        hashMap.put("Cookies", cookies);
 
-    public String finalParse() {
+        return hashMap;
+    }
+    public String finalParse(LinkedHashMap<String, ArrayList<Product>> hashMap) {
         // Create a HashMap to store groups of products based on price
         StringBuilder finalString = new StringBuilder();
         HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
-        finalString.append(groupedProducts("Milk") + "\n");
-        finalString.append(groupedProducts("Bread") + "\n");
-        finalString.append(groupedProducts("Cookies") + "\n");
-        finalString.append(groupedProducts("Apples") + "\n");
+        finalString.append(groupedProducts("Milk",hashMap) + "\n");
+        finalString.append(groupedProducts("Bread",hashMap) + "\n");
+        finalString.append(groupedProducts("Cookies",hashMap) + "\n");
+        finalString.append(groupedProducts("Apples",hashMap) + "\n");
         finalString.append("Errors         \t \t seen: " + exceptycount + " times");
         return finalString.toString();
     }
@@ -99,13 +100,13 @@ public class Main {
 
     }
 
-    public String groupedProducts(String input) {
+    public String groupedProducts(String input, LinkedHashMap<String, ArrayList<Product>> hashMap) {
         String groupedproduct = null;
         StringBuilder groupString = new StringBuilder();
         int count = 0;
         int thing = 0;
         HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
-        for (Product product : data.get(input)) {
+        for (Product product : hashMap.get(input)) {
             count++;
             if (!groupedProducts.containsKey(product.getPrice())) {
                 groupedProducts.put(product.getPrice(), new ArrayList<Product>());
@@ -128,18 +129,14 @@ public class Main {
         }
         return groupString.toString();
     }
-
-
     public String outputBuilder(String name, int seen) {
         return "name:    " + name + " \t\t seen: " + seen + " times\n" +
                 "============= \t \t =============\n";
     }
-
     public String outputBuilderTwo(double price, int seenPrice) {
         return "Price: \t " + price + "\t\t seen: " + seenPrice + " times" +
                 "\n-------------\t\t -------------\n";
     }
-
     public String outputBuilderThree(double price, int seenPrice) {
         return "Price: \t " + price + "\t\t seen: " + seenPrice + " times\n";
     }

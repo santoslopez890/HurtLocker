@@ -1,4 +1,5 @@
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -6,8 +7,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 public class ProductTest {
+    private static LinkedHashMap<String, ArrayList<Product>> data ;
+    @Before
+    public void setup(){
+        data=new LinkedHashMap<>();
+    }
     @Test
     public void productTestBurger() throws ParseException {
         //given
@@ -53,48 +60,7 @@ public class ProductTest {
 //        String actual =bread.toString();
 //        Assert.assertEquals(actual,expected);
     }
-    @Test
-    public void soutTest() throws Exception {
-        Main test=new Main();
-        String expected="name:    Milk \t\t seen: 6 times\n" +
-                "============= \t \t =============\n" +
-                "Price: \t 3.23\t\t seen: 5 times\n" +
-                "-------------\t\t -------------\n" +
-                "Price:   1.23\t\t seen: 1 time\n" +
-                "\n" +
-                "name:   Bread\t\t seen: 6 times\n" +
-                "=============\t\t =============\n" +
-                "Price:   1.23\t\t seen: 6 times\n" +
-                "-------------\t\t -------------\n" +
-                "\n" +
-                "name: Cookies     \t seen: 8 times\n" +
-                "=============     \t =============\n" +
-                "Price:   2.25        seen: 8 times\n" +
-                "-------------        -------------\n" +
-                "\n" +
-                "name:  Apples     \t seen: 4 times\n" +
-                "=============     \t =============\n" +
-                "Price:   0.25     \t seen: 2 times\n" +
-                "-------------     \t -------------\n" +
-                "Price:   0.23  \t \t seen: 2 times\n" +
-                "\n" +
-                "Errors         \t \t seen: 4 times";
-        String output=test.readRawDataToString();
-        ArrayList <Product> deparsedOutput=test.deparseify(output);
-        System.out.println("\nunsorted\n");
-        for (Product i:deparsedOutput
-        ) {
-            System.out.println(i);
-        }
 
-        test.nameSorter(deparsedOutput);
-        System.out.println("\nsorted\n");
-
-        System.out.println("\nHashmap set");
-        System.out.println(test.finalParse());
-
-
-    }
     @Test
     public void outputBuilder(){
         //given
@@ -124,8 +90,8 @@ public class ProductTest {
         Main test=new Main();
         String output=test.readRawDataToString();
         ArrayList <Product> deparsedOutput=test.deparseify(output);
-        test.nameSorter(deparsedOutput);
-        System.out.println(test.finalParse());
+        test.nameSorter(deparsedOutput,data);
+        System.out.println(test.finalParse(data));
 
     }
 
