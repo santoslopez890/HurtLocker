@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +43,7 @@ public class Main {
                 productArrayList.add(new Product(name, price, type, date));
             }
         }
+
         return productArrayList;
 
     }
@@ -82,30 +84,57 @@ public class Main {
             return sorted;
     }
     public String finalParse(){
-        StringBuilder output=new StringBuilder();
-        boolean alreadySeen=false;
-        int seen=0;
-        int priceSeen;
-        double price=0;
-        String name;
-
-        for (Product i: data.get("Apples")) {
-            name="Apples";
-            seen++;
-        }
-
+        // Create a HashMap to store groups of products based on price
+        HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
+//        StringBuilder output=new StringBuilder();
+//        boolean alreadySeen=false;
+//        int seen=0;
+//        int priceSeen;
+//        String name;
+        groupedProducts("Apples");
+        groupedProducts("Bread");
+        groupedProducts("Milk");
+        groupedProducts("Cookies");
 
         return null;
+
+    }
+    public void groupedProducts(String input){
+        int count=0;
+        int thing=0;
+        HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
+        for (Product product : data.get(input)) {
+            count++;
+            if (!groupedProducts.containsKey(product.getPrice())) {
+                groupedProducts.put(product.getPrice(), new ArrayList<Product>());
+            }
+            groupedProducts.get(product.getPrice()).add(product);
+        }
+        System.out.println(outputBuilder(input,count));
+        for (Double price : groupedProducts.keySet()) {
+            int pricecount=0;
+            System.out.println("Products with price $" + price + ":");
+
+            for (Product product : groupedProducts.get(price)) {
+                System.out.println("- " + product.getName());
+                pricecount++;
+            }
+            System.out.println(pricecount);
+        }
+
     }
 
-    public String outputBuilder(String name,int seen,double price,int seenPrice){
+
+    public String outputBuilder(String name,int seen){
         return "name:    " + name + " \t\t seen: " + seen + " times\n" +
-                "============= \t \t =============\n" +
-                "Price: \t " + price + "\t\t seen: " + seenPrice + " times"+
-                "\n-------------\t\t -------------\n";
+                "============= \t \t =============\n";
     }
+
     public String outputBuilderTwo(double price,int seenPrice){
+        return "Price: \t " + price + "\t\t seen: " + seenPrice + " times"+
+        "\n-------------\t\t -------------\n";
+    }
+    public String outputBuilderThree(double price,int seenPrice){
         return "Price: \t " + price + "\t\t seen: " + seenPrice + " times";
     }
-
 }
