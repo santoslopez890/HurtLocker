@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
 
 public class Main {
     private static int exceptycount;
-    //private static LinkedHashMap<String, ArrayList<Product>> data = new LinkedHashMap<>();
-
     public String readRawDataToString() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
         String result = IOUtils.toString(classLoader.getResourceAsStream("RawData.txt"));
@@ -60,17 +58,16 @@ public class Main {
         ArrayList<Product> sorted = new ArrayList<>();
         for (Product j : productArrayList) {
             try {
-                char firstCharacter = j.getName().charAt(0);
-                if (firstCharacter == 'a') {
+                if (j.getName().charAt(0) == 'a') {
                     apples.add(j);
                 }
-                if (firstCharacter == 'B') {
+                if (j.getName().charAt(0) == 'B') {
                     bread.add(j);
                 }
-                if (firstCharacter == 'M') {
+                if (j.getName().charAt(0) == 'M') {
                     milk.add(j);
                 }
-                if (firstCharacter == 'C') {
+                if (j.getName().charAt(0) == 'C') {
                     cookies.add(j);
                 }
             } catch (StringIndexOutOfBoundsException e) {
@@ -81,7 +78,6 @@ public class Main {
         hashMap.put("Bread", bread);
         hashMap.put("Milk", milk);
         hashMap.put("Cookies", cookies);
-
         return hashMap;
     }
     public String finalParse(LinkedHashMap<String, ArrayList<Product>> hashMap) {
@@ -95,14 +91,11 @@ public class Main {
         finalString.append("Errors         \t \t seen: " + exceptycount + " times");
         return finalString.toString();
     }
-
     public void runAllParsers() {
-
     }
-
     public String groupedProducts(String input, LinkedHashMap<String, ArrayList<Product>> hashMap) {
         String groupedproduct = null;
-        StringBuilder groupString = new StringBuilder();
+        StringBuilder groupStringBuiler = new StringBuilder();
         int count = 0;
         int thing = 0;
         HashMap<Double, ArrayList<Product>> groupedProducts = new HashMap<>();
@@ -113,24 +106,24 @@ public class Main {
             }
             groupedProducts.get(product.getPrice()).add(product);
         }
-        groupString.append(outputBuilder(input, count));
+        groupStringBuiler.append(outputBuilder(input, count));
         for (Double price : groupedProducts.keySet()) {
             int pricecount = 0;
             for (Product product : groupedProducts.get(price)) {
                 pricecount++;
             }
             if (thing == 0) {
-                groupString.append(outputBuilderTwo(price, pricecount));
+                groupStringBuiler.append(outputBuilderTwo(price, pricecount));
             }
             if (thing > 0) {
-                groupString.append(outputBuilderThree(price, pricecount));
+                groupStringBuiler.append(outputBuilderThree(price, pricecount));
             }
             thing++;
         }
-        return groupString.toString();
+        return groupStringBuiler.toString();
     }
     public String outputBuilder(String name, int seen) {
-        return "name:    " + name + " \t\t seen: " + seen + " times\n" +
+        return String.format("name: %7s",name)+ " \t\t seen: " + seen + " times\n" +
                 "============= \t \t =============\n";
     }
     public String outputBuilderTwo(double price, int seenPrice) {

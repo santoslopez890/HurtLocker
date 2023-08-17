@@ -23,7 +23,6 @@ public class ProductTest {
         String type= "Food";
         Date expiration=new SimpleDateFormat( "yyyyMMdd" ).parse( "20100520" );
         //when
-
         Product burger=new Product();
         burger.setName(nameExpected);
         burger.setPrice(price);
