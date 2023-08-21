@@ -1,0 +1,2 @@
+public class HurtLocker2 {
+}

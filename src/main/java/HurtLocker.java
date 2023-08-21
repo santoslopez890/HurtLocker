@@ -1,17 +1,13 @@
 import org.apache.commons.io.IOUtils;
 
-import javax.swing.*;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class Main {
+public class HurtLocker {
     private static int exceptycount;
     public String readRawDataToString() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -55,7 +51,6 @@ public class Main {
         ArrayList<Product> cookies = new ArrayList<>();
         ArrayList<Product> milk = new ArrayList<>();
         ArrayList<Product> apples = new ArrayList<>();
-        ArrayList<Product> sorted = new ArrayList<>();
         for (Product j : productArrayList) {
             try {
                 if (j.getName().charAt(0) == 'a') {
@@ -91,7 +86,12 @@ public class Main {
         finalString.append("Errors         \t \t seen: " + exceptycount + " times");
         return finalString.toString();
     }
-    public void runAllParsers() {
+    public String runAllParsers() throws Exception {
+        LinkedHashMap<String, ArrayList<Product>> data = new LinkedHashMap<>();
+        String output=readRawDataToString();
+        ArrayList <Product> deparsedOutput=deparseify(output);
+        nameSorter(deparsedOutput,data);
+        return finalParse(data);
     }
     public String groupedProducts(String input, LinkedHashMap<String, ArrayList<Product>> hashMap) {
         String groupedproduct = null;
@@ -123,7 +123,8 @@ public class Main {
         return groupStringBuiler.toString();
     }
     public String outputBuilder(String name, int seen) {
-        return String.format("name: %7s",name)+ " \t\t seen: " + seen + " times\n" +
+
+        return String.format("name: %6s",name)+ " \t\t seen: " + seen + " times\n" +
                 "============= \t \t =============\n";
     }
     public String outputBuilderTwo(double price, int seenPrice) {
